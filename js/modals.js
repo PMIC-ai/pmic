@@ -1,10 +1,9 @@
 import { icon } from './icons.js';
-import { $, $$, esc, modal, toast, money, avatar, download, printHTML, logoMark } from './ui.js';
+import { $, $$, esc, modal, toast, money, avatar, download, printHTML } from './ui.js';
 import { store } from './store.js';
 import { USER, PEOPLE, HISTORY, FORECAST_WORKS, RIGHTS } from './data.js';
 import { projects } from './db.js';
 
-// ---------- Настройки ----------
 const THEMES = [
   { id: 'light', name: 'Светлая', side: '#F4F5F7', main: '#FFFFFF', line: '#E6E8EC' },
   { id: 'dark', name: 'Тёмная', side: '#0E1627', main: '#111A2C', line: '#22314F' },
@@ -85,7 +84,6 @@ export function openSettings(tab = 'ui') {
   $('#accentPick', el).addEventListener('input', (e) => { accent = e.target.value; $$('[data-accent]', el).forEach((b) => b.classList.remove('on')); applyTheme(theme, accent); });
 }
 
-// ---------- Приглашение ----------
 export function openInvite() {
   const chosen = [];
   const m = modal({
@@ -149,7 +147,6 @@ export function openInvite() {
   });
 }
 
-// ---------- Помощь ----------
 export function openHelp() {
   modal({
     size: 'sm', cls: 'center',
@@ -159,7 +156,6 @@ export function openHelp() {
   });
 }
 
-// ---------- История изменений ----------
 export function openHistory() {
   const tabs = ['Сегодня', 'Вчера', 'Текущая неделя', 'Прошлая неделя', 'Текущий месяц', 'Прошлый месяц'];
   const ranges = { 'Сегодня': 1, 'Вчера': 2, 'Текущая неделя': 3, 'Прошлая неделя': 4, 'Текущий месяц': 5, 'Прошлый месяц': 5 };
@@ -183,7 +179,6 @@ export function openHistory() {
   });
 }
 
-// ---------- Диалог печати ----------
 export function printDialog({ title, sheet, html, landscape = true }) {
   modal({
     size: 'xl', cls: 'print-ov',
@@ -203,7 +198,6 @@ export function printDialog({ title, sheet, html, landscape = true }) {
   });
 }
 
-// ---------- Прогноз затрат (PMIC AI) ----------
 export function openForecast() {
   const m = modal({
     brand: true, title: 'Прогноз затрат', size: 'md',
@@ -275,4 +269,3 @@ function showForecast(m, v) {
   m.el.querySelector('#fcAgain').onclick = () => { m.close(); openForecast(); };
 }
 
-export { logoMark };

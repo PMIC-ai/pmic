@@ -1,5 +1,3 @@
-// Совместный режим: общее рабочее пространство в Supabase (REST, без библиотек).
-// Таблица: pmic_workspaces(id text primary key, data jsonb, updated_at timestamptz) — SQL в README.
 import { CONFIG } from './config.js';
 import { store, PERSONAL } from './store.js';
 
@@ -41,13 +39,11 @@ export async function initSync(onRemoteChange) {
     else await push();
     sync.status = 'ok';
   } catch (e) { sync.status = 'error'; sync.error = e.message; return; }
-  // локальные изменения → в общее пространство
   store.on((s, patch, meta) => {
     if (applying || meta.remote) return;
     if (!Object.keys(patch).some((k) => !PERSONAL.includes(k))) return;
     clearTimeout(timer); timer = setTimeout(push, 600);
   });
-  // изменения коллег → к себе (опрос раз в 8 секунд)
   setInterval(async () => {
     if (document.hidden || pushing) return;
     try {

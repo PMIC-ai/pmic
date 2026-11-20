@@ -1,5 +1,3 @@
-// Раздел «Задачи» — по макету MVP 2.0: все/мои, плитка/список, новая задача, карточка задачи.
-// Задачи привязаны к работам проекта: закрытие задачи двигает прогресс этапа и проекта.
 import { icon } from '../icons.js';
 import { $, $$, esc, avatar, avatars, docIcon, modal, drawer, toast, popover, nav } from '../ui.js';
 import { TASK_STATUS, TASK_FILES, PEOPLE, EMPLOYEE_IDS, COMMENTS_SEED, HISTORY_SHORT } from '../data.js';
@@ -22,7 +20,6 @@ function list(tab) {
   const pr = { 'Высокий': 0, 'Средний': 1, 'Низкий': 2 };
   const order = Object.keys(TASK_STATUS);
   const f = { due: (x, y) => x.due.localeCompare(y.due), name: (x, y) => x.name.localeCompare(y.name, 'ru'), priority: (x, y) => pr[x.priority] - pr[y.priority], status: (x, y) => order.indexOf(x.status) - order.indexOf(y.status) }[S.sort];
-  // по умолчанию сначала незакрытые
   return [...a].sort((x, y) => (S.sort === 'due' ? (x.status === 'closed') - (y.status === 'closed') : 0) || f(x, y) * S.dir);
 }
 
@@ -50,7 +47,6 @@ function body(tab) {
       <td data-label="Ответственный"><span class="person">${avatar(t.resp, 30)}<span>${PEOPLE[t.resp]?.name}</span></span></td></tr>`).join('')}</tbody></table></div>${more}`;
 }
 
-// ---------- Карточка задачи ----------
 export function taskDrawer(task, onChange = () => {}) {
   const id = task.id;
   const t = () => allTasks().find((x) => x.id === id) || task;
@@ -142,7 +138,6 @@ export function taskDrawer(task, onChange = () => {}) {
   return d;
 }
 
-// ---------- Новая задача ----------
 export function newTaskModal(onCreated = () => {}, preset = {}) {
   const opts = (arr, sel) => arr.map(([v, l]) => `<option value="${v}" ${v === sel ? 'selected' : ''}>${esc(l)}</option>`).join('');
   const people = opts(PEOPLE_PICK.map((id) => [id, PEOPLE[id].name]));

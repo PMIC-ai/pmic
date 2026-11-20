@@ -41,7 +41,6 @@ export function progress(v, cls = '') {
 export const ic = icon;
 export const nav = (p) => { location.hash = '#/' + p; };
 
-// ---------- Модальные окна ----------
 let modalStack = [];
 export function modal({ title = '', body = '', footer = '', size = 'md', cls = '', onMount, onClose, brand = false } = {}) {
   const wrap = document.createElement('div');
@@ -105,7 +104,6 @@ document.addEventListener('keydown', (e) => {
   closePopovers();
 });
 
-// ---------- Уведомления ----------
 export function toast(html, tone = 'info', ms = 4200) {
   let host = $('.toasts');
   if (!host) { host = document.createElement('div'); host.className = 'toasts'; document.body.appendChild(host); }
@@ -120,7 +118,6 @@ export function toast(html, tone = 'info', ms = 4200) {
   setTimeout(kill, ms);
 }
 
-// ---------- Всплывающие меню ----------
 export function closePopovers() { $$('.popover').forEach((p) => p.remove()); }
 export function popover(anchor, items, { align = 'right', cls = '' } = {}) {
   const was = anchor._pop && document.body.contains(anchor._pop);
@@ -150,11 +147,6 @@ document.addEventListener('mousedown', (e) => {
 });
 window.addEventListener('resize', closePopovers);
 
-export function logoMark(size = 28, color = 'var(--primary)') {
-  // Знак PMIC: светлый «дом» и синий скат крыши (по мотивам логотипа из макета)
-  return `<svg width="${size}" height="${size}" viewBox="0 0 32 32" aria-hidden="true"><path d="M4.5 15.5 11 12.2h17.5V28h-24z" fill="#fff"/><path d="M4.5 15.5 11 12.2h17.5V28h-24z" fill="none" stroke="${color}" stroke-opacity=".18"/><path d="M8 4h9.2l6.8 11.6h-9.2z" fill="${color}"/></svg>`;
-}
-
 export function emptyState(text, iconName = 'info') {
   return `<div class="empty">${icon(iconName, 28)}<p>${esc(text)}</p></div>`;
 }
@@ -167,7 +159,6 @@ export function download(filename, content, mime = 'text/plain;charset=utf-8') {
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
 }
 
-// Печать произвольного HTML (в отдельном iframe, чтобы не трогать приложение)
 export function printHTML(html, title = 'PMIC', landscape = false) {
   const f = document.createElement('iframe');
   f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0';
@@ -187,7 +178,6 @@ export function printHTML(html, title = 'PMIC', landscape = false) {
 
 export function debounce(fn, ms = 200) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 
-// Таблица: на телефоне превращается в карточки (data-label)
 export function table({ cols, rows, cls = '', rowAttr = () => '' }) {
   return `<div class="table-wrap"><table class="tbl ${cls}"><thead><tr>${cols.map((c) => `<th class="${c.cls || ''}">${esc(c.label)}</th>`).join('')}</tr></thead>
   <tbody>${rows.map((r, i) => `<tr ${rowAttr(r, i)}>${cols.map((c) => `<td class="${c.cls || ''}" data-label="${esc(c.label)}">${c.render(r, i)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;

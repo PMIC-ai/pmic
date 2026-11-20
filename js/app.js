@@ -135,7 +135,6 @@ function shellHTML(path, title, back) {
   </div>`;
 }
 
-// ---------- Глобальный поиск ----------
 function searchIndex() {
   const idx = [];
   FILES.forEach((g) => g.items.forEach((d) => idx.push({ kind: 'Документы', label: d.name, type: d.type, go: 'project/palace/files' })));
@@ -244,7 +243,7 @@ function render() {
   const m = match(path);
   if (!m) return go('dashboard');
   closePopovers();
-  if (cleanup) { try { cleanup(); } catch { /* */ } cleanup = null; }
+  if (cleanup) { try { cleanup(); } catch {} cleanup = null; }
   const ctx = { params: m.params, query, path };
   const title = typeof m.page.title === 'function' ? m.page.title(ctx) : (m.page.title || 'PMIC');
   const back = typeof m.page.back === 'function' ? m.page.back(ctx) : m.page.back;
@@ -253,7 +252,6 @@ function render() {
     root.innerHTML = m.page.render(ctx);
     cleanup = m.page.mount?.(root, ctx) || null;
   } else {
-    // Каркас создаём один раз, дальше обновляем меню, заголовок и нижнюю панель
     if (!$('.app')) {
       root.innerHTML = shellHTML(path, title, back);
       mountShell();
@@ -266,7 +264,6 @@ function render() {
       $('#moreBtn').onclick = moreMenu;
       $('#sidebar').classList.remove('open'); $('#scrim').classList.remove('show');
     }
-    // новый контейнер на каждую страницу — обработчики прошлой страницы не протекают
     const old = $('#view');
     const view = old.cloneNode(false);
     old.replaceWith(view);
@@ -282,10 +279,8 @@ function render() {
 window.addEventListener('hashchange', render);
 getDb();
 render();
-// Совместный режим: подтягиваем данные команды и перерисовываем экран, если ничего не открыто
 initSync(() => { if (!document.querySelector('.overlay.show, .drawer-wrap.show')) render(); }).then(() => { if (sync.status === 'ok') render(); });
 
-// Ползунки: закрашиваем пройденную часть дорожки
 const rangeFill = (r) => { const a = +r.min || 0, b = +r.max || 100; r.style.setProperty('--v', `${((+r.value - a) / (b - a || 1)) * 100}%`); };
 document.addEventListener('input', (e) => { if (e.target.matches?.('input[type=range]')) rangeFill(e.target); });
 new MutationObserver(() => document.querySelectorAll('input[type=range]').forEach(rangeFill)).observe(document.body, { childList: true, subtree: true });

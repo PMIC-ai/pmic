@@ -13,7 +13,6 @@
     { "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/" } }
   </script>
   <script>
-    // Тема применяется до отрисовки, чтобы не было вспышки
     try { var s = JSON.parse(localStorage.getItem('pmic-demo-v1') || '{}'); document.documentElement.dataset.theme = s.theme || 'light'; if (s.accent) document.documentElement.style.setProperty('--primary', s.accent); } catch (e) {}
   </script>
 </head>

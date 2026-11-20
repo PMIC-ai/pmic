@@ -1,4 +1,3 @@
-// Яндекс Метрика (если указан номер счётчика в config.js) и цели по ключевым действиям демо
 import { CONFIG } from './config.js';
 
 const id = String(CONFIG.metrikaId || '').trim();
@@ -9,8 +8,7 @@ if (id) {
   })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
   window.ym(+id, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true, trackHash: true });
 }
-// Отправка цели: track('project_created'), track('import_done') …
 export function track(goal, params) {
-  try { if (id && window.ym) window.ym(+id, 'reachGoal', goal, params); } catch { /* */ }
+  try { if (id && window.ym) window.ym(+id, 'reachGoal', goal, params); } catch {}
   window.dispatchEvent(new CustomEvent('pmic:goal', { detail: goal }));
 }

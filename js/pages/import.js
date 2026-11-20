@@ -1,4 +1,3 @@
-// Импорт графика работ из Excel/CSV: в новый проект или вместо структуры текущего
 import { icon } from '../icons.js';
 import { $, esc, modal, toast, nav, money } from '../ui.js';
 import { readRows, parseSchedule, downloadTemplate } from '../excel.js';

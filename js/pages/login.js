@@ -3,19 +3,18 @@ import { $, nav, toast } from '../ui.js';
 import { store } from '../store.js';
 import { USER } from '../data.js';
 
-// Правая панель: живое превью продукта (иллюстрация)
 const curve = (pts) => pts.map((v, i) => `${i ? 'L' : 'M'}${i * 30} ${100 - v}`).join(' ');
 const preview = `<div class="lp-card">
   <div class="lp-row"><span class="lp-k">Жилой комплекс · прогноз PMIC AI</span><span class="lp-pill">${icon('sparkles', 14)} AI</span></div>
-  <div class="lp-kpis"><div><small>Срок окончания</small><b>+46 дн.</b></div><div><small>Итоговая стоимость</small><b>+3,8%</b></div><div><small>Риск срыва</small><b class="lp-risk">38<span>/100</span></b></div></div>
+  <div class="lp-kpis"><div><small>Окончание</small><b>+46 дн.</b></div><div><small>Бюджет</small><b>+3,8%</b></div><div><small>Риск срыва</small><b class="lp-risk">38<span>/100</span></b></div></div>
   <svg class="lp-chart" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">
     <path d="${curve([4, 10, 19, 30, 42, 55, 67, 78, 87, 94, 98])}" class="lp-plan"/>
     <path d="${curve([3, 8, 15, 24, 34, 44, 53])}" class="lp-fact"/>
     <path d="M180 47 L210 37 L240 27 L270 18 L300 11" class="lp-fc"/>
   </svg>
   <div class="lp-legend"><span><i class="l1"></i>План</span><span><i class="l2"></i>Факт</span><span><i class="l3"></i>Прогноз</span></div>
-</div>
-<div class="lp-float">${icon('triangle-alert', 16)}<div><b>Задержка оплаты 30 дн.</b><small>сдвиг срока +21 день</small></div></div>`;
+  <div class="lp-alert">${icon('triangle-alert', 18)}<div><b>Задержка оплаты 30 дн.</b><small>Сценарий «что если»</small></div><span class="lp-delta">+21 дн.</span></div>
+</div>`;
 
 export default {
   title: 'Вход',

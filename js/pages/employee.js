@@ -1,4 +1,3 @@
-// Карточка сотрудника — по макету MVP 2.0 (Figma «5.5 Employee card»)
 import { icon } from '../icons.js';
 import { $, esc, avatar, avatars, modal, toast, nav, progress } from '../ui.js';
 import { PEOPLE } from '../data.js';

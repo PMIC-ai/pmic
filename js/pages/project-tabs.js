@@ -3,7 +3,6 @@ import { $, $$, esc, avatar, avatars, docIcon, docStatus, money, modal, drawer, 
 import { FILES, PEOPLE, CAMERAS, INVOICES, BANKS, GOS_SERVICES, COMMENTS_SEED, HISTORY_SHORT, EMPLOYEE_IDS } from '../data.js';
 import { store } from '../store.js';
 
-// ================= Файлы =================
 const FS = { open: {}, collapsed: {}, sort: 'date', type: 'all' };
 const dkey = (d) => d.id || d.name;
 export const statusOf = (d) => store.get().docStatus[dkey(d)] || d.status;
@@ -198,7 +197,6 @@ export const filesTab = {
   },
 };
 
-// ================= Прямой эфир =================
 export const liveTab = {
   render() {
     return `<div class="card" style="padding:26px 28px"><div class="live-title">Прямой эфир</div>
@@ -231,7 +229,6 @@ export const liveTab = {
   },
 };
 
-// ================= Счета =================
 const isPaid = (inv) => !!store.get().paid[inv.id];
 function invoicesTable() {
   return `<div class="table-wrap"><table class="tbl cards">
@@ -288,7 +285,6 @@ export const invoicesTab = {
   },
 };
 
-// ================= Госуслуги =================
 const gosStatus = (id) => store.get().gos[id];
 function gosModal(s) {
   modal({

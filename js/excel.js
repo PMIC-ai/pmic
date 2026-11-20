@@ -1,4 +1,3 @@
-// Excel/CSV: выгрузка (.xlsx) и загрузка графика работ. SheetJS подгружается только когда нужен.
 import { uid, parseRu, addDays, TODAY, leaves, roll, fmt } from './db.js';
 
 let loading = null;
@@ -12,7 +11,6 @@ export function loadXLSX() {
   }));
 }
 
-// sheets: [{ name, rows: [[...], ...], widths?: [..] }]
 export async function exportXlsx(filename, sheets) {
   const X = await loadXLSX();
   const wb = X.utils.book_new();
@@ -51,7 +49,6 @@ export async function downloadTemplate() {
   ] }]);
 }
 
-// Чтение файла → массив строк
 export async function readRows(file) {
   const X = await loadXLSX();
   const buf = await file.arrayBuffer();
@@ -67,7 +64,6 @@ const H = {
 const num = (v) => { if (typeof v === 'number') return v; const n = parseFloat(String(v).replace(/\s/g, '').replace(',', '.').replace(/[^\d.-]/g, '')); return isNaN(n) ? 0 : n; };
 const dateOf = (v) => v instanceof Date ? parseRu(v) : typeof v === 'number' ? addDays('1899-12-30', v) : parseRu(v);
 
-// Разбор таблицы графика в дерево этапов. Иерархия — по коду (1, 1.1, 1.1.1), колонке «Уровень» или отступам.
 export function parseSchedule(rows) {
   const hi = rows.findIndex((r) => r.some((c) => H.name.test(String(c))) && r.some((c) => H.start.test(String(c))));
   if (hi < 0) throw new Error('Не нашли заголовки. Нужны колонки «Название», «Начало», «Окончание» (остальные — по желанию).');
@@ -94,7 +90,6 @@ export function parseSchedule(rows) {
     stack[stack.length - 1].node.children.push(n);
     stack.push({ node: n, level: it.level });
   });
-  // Листья без дат/бюджета — заполняем разумно; у групп данные считаются по вложенным
   let cursor = TODAY;
   leaves(root).forEach((l) => {
     if (!l.start) l.start = cursor;

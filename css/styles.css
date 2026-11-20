@@ -1,4 +1,4 @@
-/* ===== PMIC — стили ===== */
+/* PMIC */
 @font-face { font-family: Inter; font-weight: 400; font-display: swap; src: url(../assets/fonts/inter-cyrillic-400-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
 @font-face { font-family: Inter; font-weight: 500; font-display: swap; src: url(../assets/fonts/inter-cyrillic-500-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
 @font-face { font-family: Inter; font-weight: 600; font-display: swap; src: url(../assets/fonts/inter-cyrillic-600-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
@@ -9,22 +9,24 @@
 @font-face { font-family: Inter; font-weight: 700; font-display: swap; src: url(../assets/fonts/inter-latin-700-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2212; }
 
 :root {
-  /* Токены из Figma (PMIC / UI kit) */
   --primary: #4081E1; --primary-600: #316CC6; --primary-50: #EEF4FD; --primary-100: #CCE1FF;
   --accent: #EC8841; --accent-600: #D16B25; --accent-50: #FDF1E8;
   --yellow: #F1C00A; --yellow-50: #FDF6D3; --yellow-ink: #8A6D00; --yellow-3: #FFEC83;
   --green: #6BB473; --green-50: #E8F5E9; --green-ink: #3E8A47; --green-3: #75DFA1;
   --red: #DD5069; --red-50: #FCE8EC; --red-ink: #C93A55;
   --sky: #4EA2D6; --sky-50: #E3F1FA; --sky-ink: #2B7DB0;
-  --bg: #F5F5F5; --surface: #FFFFFF; --surface-2: #F7F7F8; --surface-3: #EFEFF1;
-  --border: #ECECEC; --border-2: #D9D9DC;
-  --text: #2C2B30; --text-2: #828282; --text-3: #BCBCBC;
-  --track: #F1F1F1; --row-root: #BCBCBC; --row-stage: #CCE1FF; --row-group: #F5F5F5;
-  --side: #FFFFFF; --side-active: #EEF4FD;
-  --shadow: 0 1px 2px rgba(16,24,40,.04), 0 2px 8px rgba(16,24,40,.04);
-  --shadow-lg: 0 12px 40px rgba(16,24,40,.16);
-  --r: 14px; --r-sm: 10px; --r-xs: 8px;
-  --sidebar-w: 264px; --top-h: 84px;
+  --bg: #F5F7FA; --surface: #FFFFFF; --surface-2: #F3F5F8; --surface-3: #EAEEF3;
+  --border: #E6E9EF; --border-2: #D6DBE3;
+  --text: #1C1D22; --text-2: #667085; --text-3: #A0A8B6;
+  --track: #EDF0F4; --row-root: #334155; --row-stage: #E6EFFD; --row-group: #F5F7FA;
+  --side: var(--bg); --side-active: var(--surface);
+  --shadow: 0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.05);
+  --shadow-md: 0 1px 2px rgba(16,24,40,.04), 0 6px 16px -4px rgba(16,24,40,.08);
+  --shadow-lg: 0 24px 48px -12px rgba(16,24,40,.18), 0 2px 6px rgba(16,24,40,.05);
+  --ring: 0 0 0 4px rgba(64,129,225,.16);
+  --grad: linear-gradient(135deg, #5B95EC 0%, #4081E1 45%, #2F63B8 100%);
+  --r: 16px; --r-sm: 12px; --r-xs: 8px;
+  --sidebar-w: 248px; --top-h: 76px;
   --fs-h1: 32px; --fs-h2: 24px; --fs-h3: 20px; --fs-body: 16px; --fs-cap: 14px;
   --font: Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   color-scheme: light;
@@ -36,13 +38,14 @@
   --bg: #0B1220; --surface: #111A2C; --surface-2: #162238; --surface-3: #1C2A44;
   --border: #22314F; --border-2: #2E3F63; --text: #E8ECF4; --text-2: #A7B1C4; --text-3: #6D7891;
   --track: #22304C; --row-root: #2C3A58; --row-stage: #1C3058; --row-group: #152036;
-  --side: #0E1627; --side-active: #18294A;
-  --shadow: 0 1px 2px rgba(0,0,0,.3); --shadow-lg: 0 16px 48px rgba(0,0,0,.5);
+  --side: var(--bg); --side-active: var(--surface-2);
+  --shadow: 0 1px 2px rgba(0,0,0,.3); --shadow-md: 0 1px 2px rgba(0,0,0,.35); --shadow-lg: 0 24px 48px -12px rgba(0,0,0,.6);
+  --ring: 0 0 0 4px rgba(91,149,236,.25);
   color-scheme: dark;
 }
 [data-theme="blue"] {
   --bg: #DCE8FB; --surface: #FFFFFF; --surface-2: #F2F7FE; --surface-3: #E6EFFC; --border: #CFDDF4; --border-2: #BBCDEC;
-  --side: #EEF4FE; --side-active: #DCE7FB; --row-group: #F0F5FD; --track: #E5EDF9;
+  --side: var(--bg); --side-active: #FFFFFF; --row-group: #F0F5FD; --track: #E5EDF9;
 }
 
 * { box-sizing: border-box; }
@@ -68,7 +71,6 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; }
 /* ===== Каркас ===== */
 .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; grid-template-rows: var(--top-h) 1fr; min-height: 100vh; min-height: 100dvh; }
 .brand { grid-area: 1 / 1; display: flex; align-items: center; gap: 12px; padding: 0 36px; background: var(--side); border-bottom: 1px solid var(--border); color: var(--primary); font-weight: 700; font-size: 26px; letter-spacing: .3px; text-decoration: none !important; }
-.logo-box { width: 56px; height: 56px; border-radius: 10px; background: var(--primary-50); display: grid; place-items: center; flex: none; }
 .sidebar { grid-area: 2 / 1; background: var(--side); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 18px 0 24px; position: sticky; top: var(--top-h); height: calc(100vh - var(--top-h)); height: calc(100dvh - var(--top-h)); overflow-y: auto; }
 .nav { display: flex; flex-direction: column; gap: 2px; }
 .nav-bottom { margin-top: auto; }
@@ -251,7 +253,6 @@ textarea.input { height: auto; min-height: 96px; padding: 12px 14px; resize: ver
 .modal-sub { color: var(--text); font-weight: 500; margin-bottom: 14px; }
 .ai-brand { display: flex; align-items: center; gap: 10px; color: var(--accent); margin-bottom: 18px; }
 .ai-brand b { font-weight: 700; letter-spacing: .3px; }
-.ai-logo { width: 46px; height: 46px; border-radius: 4px; background: var(--accent); display: grid; place-items: center; }
 .center { text-align: center; }
 
 /* Выдвижная панель */
@@ -306,8 +307,6 @@ textarea.input { height: auto; min-height: 96px; padding: 12px 14px; resize: ver
 .login-form h1 { font-size: 28px; font-weight: 500; margin-bottom: 30px; letter-spacing: -.3px; }
 .login-form .field { margin-bottom: 18px; }
 .login-form .row { display: flex; justify-content: space-between; align-items: center; margin: -6px 0 26px; font-size: 14px; }
-.login-art { position: absolute; right: 0; top: 0; bottom: 0; width: 360px; pointer-events: none; z-index: 1; }
-.login-art svg { width: 100%; height: 100%; }
 .demo-hint { margin-top: 18px; padding: 12px 14px; border-radius: 10px; background: var(--primary-50); color: var(--text-2); font-size: 13px; }
 .float { animation: float 7s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
 .float.d2 { animation-delay: -2s; animation-duration: 9s; } .float.d3 { animation-delay: -4s; animation-duration: 11s; }
@@ -662,7 +661,7 @@ textarea.input { height: auto; min-height: 96px; padding: 12px 14px; resize: ver
 .report-doc th { background: #eef3fc; }
 .report-doc .num { text-align: right; }
 
-/* Печать (модалка в стиле системного диалога) */
+/* Печать */
 .print-modal { display: grid; grid-template-columns: 1fr 360px; min-height: 520px; padding: 0; overflow: hidden; }
 .print-preview { background: #E9EBEF; padding: 28px; display: grid; place-items: center; overflow: auto; }
 .print-sheet { background: #fff; color: #111; padding: 24px; width: 100%; max-width: 560px; box-shadow: 0 4px 18px rgba(0,0,0,.12); font-size: 11px; }
@@ -772,8 +771,7 @@ textarea.input { height: auto; min-height: 96px; padding: 12px 14px; resize: ver
   .g-left table { width: 300px; }
   .g-left td:nth-child(n+2), .g-left th:nth-child(n+2) { display: none; }
   .g-left col.c-d { width: 0; }
-  .login-art { width: 200px; opacity: .45; }
-  .login .brand { display: flex; padding: 24px 20px; }
+    .login .brand { display: flex; padding: 24px 20px; }
 }
 @media (max-width: 640px) {
   .dash { grid-template-columns: 1fr; }
@@ -854,9 +852,9 @@ a.proj-card { color: inherit; text-decoration: none; }
 .login .brand { justify-content: flex-start; }
 .login .brand .brand-t, .sidebar .side-brand .brand-t { display: inline !important; }
 .sidebar .side-brand { justify-content: flex-start !important; }
-@media (max-width: 640px) { .login-art { width: 130px; opacity: .3; } .login .brand { padding: 22px 20px; } }
+@media (max-width: 640px) {  .login .brand { padding: 22px 20px; } }
 
-/* ===== MVP 2.0: задачи, карточка сотрудника, права ===== */
+/* ===== Задачи, сотрудники, права ===== */
 .b-open { background: #E2F8EC; color: #1F8A55; }
 [data-theme="dark"] .b-open { background: #123826; color: #75DFA1; }
 .seg-switch { display: inline-flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 4px; }
@@ -932,7 +930,7 @@ a.proj-card { color: inherit; text-decoration: none; }
 .emp-card dd .link { white-space: normal; text-align: left; }
 .topbar { min-width: 0; } .page-title { flex: 1 1 auto; }
 
-/* ===== Живое демо: AI-прогноз, редактирование, гид, импорт ===== */
+/* ===== Прогноз, редактирование, гид, импорт ===== */
 .hint { display: flex; gap: 8px; align-items: flex-start; color: var(--text-2); font-size: 13.5px; margin: -8px 0 16px; }
 .hint .ic { flex: none; margin-top: 2px; color: var(--primary); }
 .flabel { font-size: 13px; color: var(--text-2); }
@@ -1057,34 +1055,15 @@ li.done .g-check { background: var(--green); border-color: var(--green); }
 .details .kv2 dd { white-space: normal; }
 @media (min-width: 1500px) { .details .kv2 { grid-template-columns: max-content 1fr max-content 1fr; } }
 
-/* =====================================================================
-   Редизайн 2.0 — «светлый SaaS»: воздух, мягкие тени, плавающее меню
-   ===================================================================== */
-:root {
-  --bg: #F5F7FA; --surface-2: #F3F5F8; --surface-3: #EAEEF3;
-  --border: #E6E9EF; --border-2: #D6DBE3;
-  --text: #1C1D22; --text-2: #667085; --text-3: #A0A8B6;
-  --track: #EDF0F4; --row-group: #F5F7FA;
-  --side: var(--bg); --side-active: var(--surface);
-  --shadow: 0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.05);
-  --shadow-md: 0 1px 2px rgba(16,24,40,.04), 0 6px 16px -4px rgba(16,24,40,.08);
-  --shadow-lg: 0 24px 48px -12px rgba(16,24,40,.18), 0 2px 6px rgba(16,24,40,.05);
-  --ring: 0 0 0 4px rgba(64,129,225,.16);
-  --r: 16px; --r-sm: 12px; --r-xs: 8px;
-  --top-h: 76px; --sidebar-w: 248px;
-  --grad: linear-gradient(135deg, #5B95EC 0%, #4081E1 45%, #2F63B8 100%);
-}
-[data-theme="dark"] { --side: var(--bg); --side-active: var(--surface-2); --shadow-md: 0 1px 2px rgba(0,0,0,.35); --ring: 0 0 0 4px rgba(91,149,236,.25); }
-[data-theme="blue"] { --side: var(--bg); --side-active: #fff; }
+/* ===== Оформление ===== */
 body { font-size: 14.5px; font-feature-settings: 'cv11', 'ss01'; }
 h1, h2, h3 { letter-spacing: -.02em; }
 
-/* Словесный знак вместо логотипа */
+/* Логотип */
 .brand-t, .wordmark { font-weight: 800; letter-spacing: -.045em; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1; }
 .wordmark { font-size: 40px; display: inline-block; }
-.logo-box { display: none !important; }
 
-/* Каркас: меню на фоне страницы, активный пункт — белая «плашка» */
+/* Меню и шапка */
 .brand { background: var(--side); border: 0; padding: 0 28px; font-size: 26px; }
 .sidebar { background: var(--side); border: 0; padding: 6px 14px 20px; }
 .nav { gap: 2px; }
@@ -1140,7 +1119,7 @@ h1, h2, h3 { letter-spacing: -.02em; }
 .badge { height: 24px; padding: 0 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
 .pill { border-radius: 999px; }
 
-/* Вкладки — сегменты */
+/* Вкладки */
 .tabs { gap: 2px; background: var(--surface-3); padding: 4px; border-radius: 12px; width: max-content; max-width: 100%; }
 .tab { padding: 7px 14px; border-radius: 9px; font-size: 14px; font-weight: 500; color: var(--text-2); transition: background .15s, color .15s; }
 .tab:hover { color: var(--text); }
@@ -1177,9 +1156,8 @@ h1, h2, h3 { letter-spacing: -.02em; }
 .kpi:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
 .kpi .big { font-size: 34px; font-weight: 700; letter-spacing: -.035em; font-variant-numeric: tabular-nums; margin: 18px 0 14px; }
 
-/* ===== Вход — экран из двух половин ===== */
+/* ===== Вход ===== */
 .login { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); grid-template-rows: none; background: var(--surface); }
-.login-art { display: none; }
 .login-l { display: flex; flex-direction: column; padding: 32px 48px; min-height: 100dvh; }
 .login .brand { padding: 0; font-size: 28px; position: static; }
 .login-form { width: min(400px, 100%); margin: auto; padding: 32px 0; align-self: auto; }
@@ -1222,11 +1200,8 @@ h1, h2, h3 { letter-spacing: -.02em; }
 .lp-legend { display: flex; gap: 16px; font-size: 12px; color: #667085; }
 .lp-legend i { display: inline-block; width: 10px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
 .lp-legend .l1 { background: #CCE1FF; } .lp-legend .l2 { background: #4081E1; } .lp-legend .l3 { background: #EC8841; }
-.lp-float { position: absolute; right: -14px; bottom: -26px; display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,.96); color: #1C1D22; border-radius: 14px; padding: 10px 14px; box-shadow: 0 18px 40px -14px rgba(10,30,70,.5); animation: float 7s ease-in-out infinite; animation-delay: -3s; }
-.lp-float .ic { color: #D16B25; }
-.lp-float b { display: block; font-size: 13px; } .lp-float small { color: #667085; font-size: 12px; }
-
-/* Адаптив редизайна */
+ 
+/* Адаптивность */
 @media (max-width: 1240px) {
   :root { --sidebar-w: 80px; }
   .brand { padding: 0; font-size: 20px; }
@@ -1253,9 +1228,6 @@ h1, h2, h3 { letter-spacing: -.02em; }
   .login-form h1 { font-size: 28px; }
   .kpi .big { font-size: 28px; }
 }
-/* Редизайн: доводка */
-:root { --row-root: #334155; --row-stage: #E6EFFD; }
-[data-theme="dark"] { --row-root: #2C3A58; --row-stage: #1C3058; }
 .g-bar.root i { background: #94A3B8; }
 .tree tr.stage td { border-top-color: var(--surface); }
 .seg-switch { background: var(--surface-3); border: 0; border-radius: 12px; }
@@ -1276,17 +1248,16 @@ input[type=range]:disabled { opacity: .5; cursor: default; }
 .proj-card h4 { font-size: 19px; font-weight: 650; letter-spacing: -.02em; }
 .group-box { border-radius: 16px; }
 .group-h { border-radius: 12px; }
-/* Темы поверх редизайна (объявлены после :root, чтобы не перебивались) */
-[data-theme="dark"] {
-  --bg: #0B1220; --surface: #111A2C; --surface-2: #162238; --surface-3: #1C2A44;
-  --border: #22314F; --border-2: #2E3F63; --text: #E8ECF4; --text-2: #A7B1C4; --text-3: #6D7891;
-  --track: #22304C; --row-group: #152036;
-  --shadow: 0 1px 2px rgba(0,0,0,.3); --shadow-lg: 0 24px 48px -12px rgba(0,0,0,.6);
-}
 [data-theme="dark"] .input:hover, [data-theme="dark"] .select:hover { border-color: var(--border-2); }
-[data-theme="blue"] {
-  --bg: #DCE8FB; --surface-2: #F2F7FE; --surface-3: #E6EFFC; --border: #CFDDF4; --border-2: #BBCDEC; --row-group: #F0F5FD; --track: #E5EDF9;
-}
 @media (min-width: 641px) and (max-width: 1240px) { .dash > .kpi:nth-of-type(3) { grid-column: 1 / -1; } }
 .head-row > div { min-width: 0; max-width: 100%; }
 .head-row .tabs { min-width: 0; max-width: 100%; }
+.lp-kpis div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.lp-kpis small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lp-kpis b { line-height: 1.1; white-space: nowrap; }
+.lp-alert { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: #FDF1E8; }
+.lp-alert > .ic { color: #D16B25; }
+.lp-alert b { display: block; font-size: 13.5px; } .lp-alert small { color: #667085; font-size: 12px; }
+.lp-delta { font-weight: 700; color: #D16B25; font-size: 15px; white-space: nowrap; }
+.topbar .fb-btn { height: 42px; border-radius: 12px; padding: 0 16px; }
+@media (max-width: 1600px) { .topbar .fb-btn { width: 42px; padding: 0; } }

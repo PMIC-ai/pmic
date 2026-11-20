@@ -1,4 +1,3 @@
-// Демо-экраны внешних интеграций (банк, Госуслуги). Это имитация шага, без брендинга сторонних сервисов.
 import { icon } from '../icons.js';
 import { $, esc, money, toast } from '../ui.js';
 import { INVOICES, BANKS, GOS_SERVICES, USER } from '../data.js';

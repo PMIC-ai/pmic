@@ -1,9 +1,6 @@
-// Модель данных PMIC: проекты → дерево этапов (WBS) → задачи.
-// Всё производное (прогресс, статусы, финансы, мониторинг, прогноз) вычисляется из этих данных.
 import { store } from './store.js';
 import { WBS as PALACE_WBS, PROJECTS as SEED_PROJECTS, PALACE } from './data.js';
 
-// ---------- Даты (внутри — ISO «ГГГГ-ММ-ДД») ----------
 const DAY = 864e5;
 const pad = (n) => String(n).padStart(2, '0');
 export const iso = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -21,7 +18,6 @@ export const parseRu = (s) => {
   m = t.match(/^(\d{4})-(\d{2})-(\d{2})/);
   return m ? `${m[1]}-${m[2]}-${m[3]}` : null;
 };
-// Демо-данные исходного макета «живут» вокруг 10.07.2023 — сдвигаем их так, чтобы эта дата стала сегодняшней
 export const plural = (n, [a, b, c]) => { const m = Math.abs(n) % 100, k = m % 10; return m > 10 && m < 20 ? c : k > 1 && k < 5 ? b : k === 1 ? a : c; };
 export const OFFSET = diff('2023-07-10', TODAY);
 export const shiftRu = (s) => String(s).replace(/\b(\d{2})\.(\d{2})\.(\d{4}|\d{2})\b/g, (all, d, m, y) => {
@@ -29,8 +25,6 @@ export const shiftRu = (s) => String(s).replace(/\b(\d{2})\.(\d{2})\.(\d{4}|\d{2
   return y.length === 2 ? fmt(out) : fmt(out, true);
 });
 
-// ---------- Шаблоны проектов ----------
-// [название этапа, доля бюджета, [подэтапы: название, доля длительности (старт), доля (финиш)]]
 export const TEMPLATES = {
   mkd: { name: 'Жилой дом (МКД)', stages: [
     ['Этап 1: Исходно-разрешительная документация', 0.04, [['Градостроительный план и ТУ', 0, 0.06], ['Инженерные изыскания', 0.03, 0.08]]],
@@ -86,14 +80,12 @@ export function fromTemplate(key, start, end, budget) {
   };
 }
 
-// ---------- Вычисления ----------
 export const leaves = (n) => n.children.length ? n.children.flatMap(leaves) : [n];
 export function plannedPct(n, at = TODAY) {
   if (at <= n.start) return 0;
   if (at >= n.end) return 100;
   return (diff(n.start, at) / Math.max(1, diff(n.start, n.end))) * 100;
 }
-// Свёртка узла: даты, бюджет, освоено (EV), плановый объём (PV), факт затрат (AC)
 export function roll(n, at = TODAY) {
   if (!n.children.length) {
     const ev = n.budget * n.progress / 100;
@@ -111,12 +103,11 @@ export function status(r) {
 }
 export const isOverdue = (r) => r.progress < 99.95 && r.end < TODAY;
 
-// ---------- Сид ----------
 function convertPalace(n) {
   const out = { id: n.id, name: n.name, children: n.children.map(convertPalace) };
   if (!n.children.length) {
     Object.assign(out, { start: addDays(parseRu(n.start), OFFSET), end: addDays(parseRu(n.end), OFFSET), budget: n.budget, progress: n.progress, auto: true });
-    if (n.name.includes('Фундаменты')) { out.spent = 130000000; out.end = addDays('2023-11-30', OFFSET); } // перерасход и отставание по фундаментам — как в риске из макета
+    if (n.name.includes('Фундаменты')) { out.spent = 130000000; out.end = addDays('2023-11-30', OFFSET); }
   }
   return out;
 }
@@ -172,7 +163,6 @@ export function seedDb() {
   return { version: 3, projects, tasks };
 }
 
-// ---------- Доступ ----------
 export function getDb() {
   let d = store.get().db;
   if (!d || d.version !== 3) { d = seedDb(); store.set({ db: d }); }
@@ -191,7 +181,6 @@ export function summary(p) {
   return { ...r, status: st, overdue: p.group !== 'operation' && isOverdue(r), days: diff(r.start, r.end), spi: r.pv > 0 ? r.ev / r.pv : 1, cpi: r.ac > 0 ? r.ev / r.ac : 1 };
 }
 
-// ---------- Изменения ----------
 function commit(mut) {
   const d = structuredClone(getDb());
   mut(d);
@@ -213,7 +202,7 @@ export const db = {
     let id;
     commit((d) => {
       const p = inP(d, pid), par = parentId ? findNode(p, parentId) : p.wbs;
-      if (!par.children.length && par !== p.wbs) { // лист становится группой — переносим его параметры в новый подэтап
+      if (!par.children.length && par !== p.wbs) {
         const { start, end, budget, progress } = par;
         par.children.push({ id: uid(), name: 'Работа 1', start, end, budget, progress, auto: true, children: [] });
         ['start', 'end', 'budget', 'progress', 'auto', 'spent'].forEach((k) => delete par[k]);
@@ -248,7 +237,6 @@ export const db = {
   reset() { store.set({ db: seedDb() }); },
 };
 
-// ---------- Мониторинг задач ----------
 export function taskStats(pid) {
   const ts = tasksOf(pid);
   const done = ts.filter((t) => t.status === 'closed').length;
@@ -261,14 +249,12 @@ export function taskStats(pid) {
   return { total: ts.length, done, undone: ts.length - done, overdue, inwork, months, activity };
 }
 
-// ---------- AI-прогноз (метод освоенного объёма + сценарии) ----------
 export function forecast(p, sc = {}) {
   const pay = sc.pay || 0, price = sc.price || 0, crew = sc.crew || 0;
   const r = roll(p.wbs), T = Math.max(1, diff(r.start, r.end));
   const started = TODAY > r.start, done = r.progress >= 99.95;
   const spi = started && r.pv > 0 ? Math.min(1.5, Math.max(0.3, r.ev / r.pv)) : 1;
   const cpi = r.ac > 0 ? Math.min(1.5, Math.max(0.5, r.ev / r.ac)) : 1;
-  // Earned Schedule: момент, когда по плану должен был быть достигнут текущий освоенный объём
   let es = 0;
   if (started && !done) { let lo = 0, hi = Math.min(T, diff(r.start, TODAY)); for (let k = 0; k < 24; k++) { const mid = (lo + hi) / 2; if (roll(p.wbs, addDays(r.start, mid)).pv <= r.ev) lo = mid; else hi = mid; } es = lo; }
   const at = Math.max(1, diff(r.start, TODAY));
@@ -295,7 +281,6 @@ export function forecast(p, sc = {}) {
     const send = sr.progress >= 99.95 ? sr.end : TODAY > sr.start ? addDays(TODAY, Math.max(sleft * sT, diff(TODAY, sr.end) * sleft) / ((0.6 * sspi + 0.4) * (1 + crew / 100 * 0.6)) + pay * 0.7) : addDays(sr.end, Math.max(0, delay));
     return { id: s.id, name: s.name, end: sr.end, fEnd: send, delay: Math.max(0, diff(sr.end, send)), progress: sr.progress, spi: sspi };
   });
-  // S-кривая: план / факт / прогноз (накопленный % по месяцам)
   const pts = [], last = fEnd > r.end ? fEnd : r.end;
   for (let d = r.start; d <= addDays(last, 31); d = addDays(d, 30)) {
     const plan = (roll(p.wbs, d).pv / r.budget) * 100;

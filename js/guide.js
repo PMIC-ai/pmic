@@ -1,4 +1,3 @@
-// Гид по демо: приветствие, чек-лист «что попробовать», сброс демо-данных, обратная связь
 import { icon } from './icons.js';
 import { $, esc, modal, toast, nav } from './ui.js';
 import { store } from './store.js';
@@ -78,7 +77,6 @@ export function welcome() {
   });
 }
 
-// ---------- Обратная связь ----------
 export function openFeedback() {
   let rate = 0;
   modal({

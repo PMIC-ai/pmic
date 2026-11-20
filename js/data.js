@@ -1,5 +1,3 @@
-// Демо-данные PMIC. Все данные вымышленные и хранятся только в браузере.
-
 export const USER = {
   id: 'anisimov',
   first: 'Алексей',
@@ -29,7 +27,6 @@ export const PEOPLE = {
   maltseva: { name: 'Мальцева Е.А.', role: 'Бухгалтер', dept: 'Финансовый отдел', email: 'maltseva@mail.ru', photo: P + 'biryukova.jpg' },
   osipov: { name: 'Осипов С.Е.', role: 'Инженер-технолог', dept: 'Отдел контроля качества', email: 'osipov@mail.ru', photo: P + 'melnikov.jpg' },
   nikolaev: { name: 'Николаев Р.А.', role: 'Инженер-технолог', dept: 'Отдел контроля качества', email: 'nikolaev@mail.ru', photo: P + 'shcherbakov.jpg' },
-  // Участники проектов без фото — аватар с инициалами
   ivanova: { name: 'Иванова Е.В.', role: 'Инженер ПТО', dept: 'Производственно-технический отдел', email: 'ivanova@mail.ru' },
   vasiliev: { name: 'Васильев М.А.', role: 'Прораб', dept: 'Строительный участок', email: 'vasiliev@mail.ru' },
   ivanov: { name: 'Иванов И.В.', role: 'Главный инженер проекта', dept: 'Проектный отдел', email: 'ivanov@mail.ru' },
@@ -86,7 +83,6 @@ export const PALACE = {
   ],
 };
 
-// Структура проекта (WBS). budget — плановый бюджет, spent — факт.
 let _id = 0;
 const n = (name, status, progress, start, end, budget, children, extra = {}) => ({ id: 'w' + (++_id), name, status, progress, start, end, budget, children: children || [], ...extra });
 
@@ -323,7 +319,6 @@ export const COLLISIONS = {
   },
 };
 
-// ---------- Задачи (раздел «Задачи», по макету MVP 2.0) ----------
 export const TASK_STATUS = {
   open: { label: 'Открыта', cls: 'open' },
   work: { label: 'В работе', cls: 'work' },
@@ -356,8 +351,6 @@ export const RIGHTS = {
   'Управление уч. записями': ['Создать учетную запись', 'Добавить роль пользователю', 'Определить права доступа польз-лю', 'Отправить приглашение на email', 'Редактировать учетную запись', 'Просмотр учетной записи', 'Просмотр уч.записи др. сотр.', 'Удалить учетную запись', 'Редактировать пароль', 'Восстановить пароль', 'Создать роль', 'Просмотр списка пользователей', 'Фильтрация пользователей'],
 };
 
-// ---------- Сдвиг дат демо-данных к сегодняшнему дню ----------
-// Исходный макет «живёт» вокруг 10.07.2023: переносим все даты так, чтобы эта дата стала сегодняшней.
 (() => {
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const off = Math.round((today - new Date(2023, 6, 10)) / 864e5);
@@ -372,5 +365,4 @@ export const RIGHTS = {
   TRANSACTIONS.forEach((t) => { t[1] = sh(t[1]); });
   INVOICES.forEach((i) => { i.purpose = sh(i.purpose); });
   PROFILE_PROJECTS.forEach((p) => { p.range = sh(p.range); });
-  DOC_NAMES.length; // имена документов без дат
 })();

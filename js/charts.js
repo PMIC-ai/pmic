@@ -1,4 +1,3 @@
-// Лёгкие SVG-диаграммы без зависимостей
 import { esc } from './ui.js';
 
 const polar = (cx, cy, r, a) => [cx + r * Math.cos(a), cy + r * Math.sin(a)];
@@ -9,7 +8,6 @@ function arcPath(cx, cy, r, r0, a0, a1) {
   return `M${x0},${y0} A${r},${r} 0 ${large} 1 ${x1},${y1} L${x2},${y2} A${r0},${r0} 0 ${large} 0 ${x3},${y3} Z`;
 }
 
-// Полукольцо (как на карточках «Всего проектов» и «Финансы»)
 export function halfDonut(segs, { w = 220, thick = 44 } = {}) {
   const total = segs.reduce((s, x) => s + x.value, 0) || 1;
   const cx = w / 2, cy = w / 2, r = w / 2 - 2, r0 = r - thick;
@@ -22,7 +20,6 @@ export function halfDonut(segs, { w = 220, thick = 44 } = {}) {
   return `<svg class="chart half-donut" viewBox="0 0 ${w} ${w / 2}" preserveAspectRatio="xMidYMax meet">${paths}</svg>`;
 }
 
-// Кольцо с процентом в центре
 export function ring(pct, { color = 'var(--yellow)', track = 'var(--track)', size = 180, thick = 26, label } = {}) {
   const r = (size - thick) / 2, c = 2 * Math.PI * r;
   return `<svg class="chart ring" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
@@ -32,7 +29,6 @@ export function ring(pct, { color = 'var(--yellow)', track = 'var(--track)', siz
     <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" class="ring-txt">${label ?? pct + '%'}</text></svg>`;
 }
 
-// Полукруглый индикатор (бюджет/аванс)
 export function gauge(value, max, { color = 'var(--yellow)', track = 'var(--track)', w = 200 } = {}) {
   const thick = 34, cx = w / 2, cy = w / 2, r = w / 2 - 2, r0 = r - thick;
   const k = Math.max(0.001, Math.min(1, value / max));
@@ -41,7 +37,6 @@ export function gauge(value, max, { color = 'var(--yellow)', track = 'var(--trac
     <path d="${arcPath(cx, cy, r, r0, Math.PI, Math.PI + Math.PI * k)}" fill="${color}"/></svg>`;
 }
 
-// Столбчатая диаграмма
 export function bars(values, labels, { w = 640, h = 220, max = 100, color = 'var(--primary)', ticks = [20, 40, 60, 80, 100], showValues = false, fmt = (v) => v } = {}) {
   const padL = ticks.length ? 34 : 6, padB = 26, padT = showValues ? 22 : 8;
   const cw = (w - padL) / values.length, bw = Math.min(26, cw * 0.48);
@@ -56,7 +51,6 @@ export function bars(values, labels, { w = 640, h = 220, max = 100, color = 'var
   return `<svg class="chart bars" viewBox="0 0 ${w} ${h}">${ticks.length ? grid : ''}${b}</svg>`;
 }
 
-// Круговая диаграмма
 export function pie(segs, { size = 220 } = {}) {
   const total = segs.reduce((s, x) => s + x.value, 0) || 1;
   const cx = size / 2, cy = size / 2, r = size / 2 - 4;
@@ -78,7 +72,6 @@ export function legend(segs) {
   return `<ul class="legend">${segs.map((s) => `<li><i style="background:${s.color}"></i>${esc(s.label)}</li>`).join('')}</ul>`;
 }
 
-// Линейный график по датам (S-кривая): series = [{ label, color, dash, pts: [{ d: 'ГГГГ-ММ-ДД', v }] }]
 export function lineChart(series, { w = 720, h = 260, marker, markerLabel = 'Сегодня', yMax = 100, ySuffix = '%' } = {}) {
   const all = series.flatMap((s) => s.pts.filter((p) => p.v != null).map((p) => p.d)).sort();
   if (!all.length) return '';

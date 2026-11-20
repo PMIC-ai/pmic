@@ -25,7 +25,6 @@ export function stBadge(r, overdueAware = true) {
 }
 const mln = (v) => (v / 1e6).toLocaleString('ru-RU', { maximumFractionDigits: 1 }) + ' млн';
 
-// ================= Обзор =================
 function milestonesOf(p) {
   const r = roll(p.wbs), span = Math.max(1, diff(r.start, r.end));
   return p.wbs.children.map((s) => { const sr = roll(s); return { at: (diff(r.start, sr.end) / span) * 100, label: `${s.name} · ${fmt(sr.end)}`, state: sr.progress >= 99.95 ? 'done' : sr.end < TODAY ? 'risk' : 'todo' }; });
@@ -79,7 +78,6 @@ function deleteProject(p) {
   });
 }
 
-// ================= AI-прогноз =================
 const SC = {};
 function forecastTab(p) {
   const sc = SC[p.id] || (SC[p.id] = { pay: 0, price: 0, crew: 0 });
@@ -119,7 +117,6 @@ function forecastBody(p, sc) {
       </tbody></table></div></section>`;
 }
 
-// ================= Структура =================
 const TS = { open: {}, cols: { status: true, pct: true, start: true, end: true, budget: true }, status: 'all' };
 function isOpen(pid, id, depth) { const k = pid + id; return k in TS.open ? TS.open[k] : depth <= 1; }
 function visibleRows(p, state, openFn) {
@@ -167,7 +164,6 @@ function structure(p) {
     </div>`;
 }
 
-// Карточка этапа/работы: редактирование, задачи, комментарии
 export function nodeDrawer(p0, nodeId, onChange = () => {}) {
   const pid = p0.id;
   const P = () => project(pid), N = () => findNode(P(), nodeId);
@@ -260,7 +256,6 @@ function nodeMenu(anchor, p, nodeId, redraw) {
   ]);
 }
 
-// ================= Диаграмма Ганта =================
 const ZOOMS = [
   { name: 'Месяц', ppd: 4, unit: 'm' }, { name: 'Квартал', ppd: 1.6, unit: 'q' }, { name: 'Полугодие', ppd: 0.75, unit: 'h' }, { name: 'Год', ppd: 0.36, unit: 'y' },
 ];
@@ -351,7 +346,6 @@ function bindGanttDrag(root, p, redraw) {
   g.addEventListener('pointercancel', () => { st = null; redraw(); });
 }
 
-// ================= Мониторинг =================
 function monitoring(p) {
   const m = taskStats(p.id);
   const pct = m.total ? Math.round((m.done / m.total) * 100) : 0;
@@ -370,7 +364,6 @@ function monitoring(p) {
   </div>`;
 }
 
-// ================= Страница =================
 export default {
   title: (ctx) => projectById(ctx.params.id)?.name || 'Проект',
   back: () => '#/projects',

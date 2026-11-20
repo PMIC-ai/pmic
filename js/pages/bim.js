@@ -1,4 +1,3 @@
-// BIM-модель: процедурная 3D-модель стадиона на three.js со слоями, вращением и комментариями
 import { icon } from '../icons.js';
 import { $, $$, esc, modal, toast } from '../ui.js';
 import { store } from '../store.js';
@@ -117,7 +116,6 @@ function uploadModel() {
   });
 }
 
-// ---------------- three.js ----------------
 async function initViewer(host, pinsHost) {
   const THREE = await import('three');
   const { OrbitControls } = await import('three/addons/OrbitControls.js');
@@ -149,13 +147,11 @@ async function initViewer(host, pinsHost) {
   const ellipse = (a, b, n = 96) => { const s = new THREE.Shape(); for (let i = 0; i <= n; i++) { const t = (i / n) * Math.PI * 2; const p = [a * Math.cos(t), b * Math.sin(t)]; i ? s.lineTo(...p) : s.moveTo(...p); } return s; };
   const ring = (a, b, w) => { const s = ellipse(a + w, b + w); s.holes.push(ellipse(a, b)); return s; };
 
-  // Земля
   const ground = new THREE.Shape();
   for (let i = 0; i <= 64; i++) { const t = (i / 64) * Math.PI * 2; const r = 15.5 + Math.sin(t * 3) * 1.4 + Math.cos(t * 5) * 0.8; const p = [r * Math.cos(t) * 1.05, r * Math.sin(t)]; i ? ground.lineTo(...p) : ground.moveTo(...p); }
   const groundMesh = addMesh(G('site'), new THREE.ShapeGeometry(ground), mat(dark ? 0x2a3550 : 0xeef0f3, { side: THREE.DoubleSide, transparent: true }), false);
   groundMesh.rotation.x = -Math.PI / 2; groundMesh.position.y = -0.02;
 
-  // Поле
   const fc = document.createElement('canvas'); fc.width = 256; fc.height = 384;
   const fx = fc.getContext('2d'); fx.fillStyle = '#5f8f3a'; fx.fillRect(0, 0, 256, 384);
   for (let i = 0; i < 12; i++) { fx.fillStyle = i % 2 ? '#6a9a42' : '#5f8f3a'; fx.fillRect(0, i * 32, 256, 32); }
@@ -164,7 +160,6 @@ async function initViewer(host, pinsHost) {
   const field = addMesh(G('site'), new THREE.PlaneGeometry(7.2, 10.8), new THREE.MeshStandardMaterial({ map: tex, roughness: 1 }), false);
   field.rotation.x = -Math.PI / 2; field.position.y = 0.06;
 
-  // Этажи-трибуны
   const H = 0.48;
   for (let i = 0; i < FLOORS; i++) {
     const g = G('f' + (i + 1));
@@ -173,12 +168,11 @@ async function initViewer(host, pinsHost) {
     geo.rotateX(-Math.PI / 2);
     const m = addMesh(g, geo, mat(i % 2 ? 0xd9dde4 : 0xe6e9ee));
     m.position.y = 0.1 + i * H;
-    for (let r = 0; r < 3; r++) { // ряды кресел
+    for (let r = 0; r < 3; r++) {
       const pts = ellipse(a + 0.35 + r * 0.45, b + 0.35 + r * 0.45, 96).getPoints(96).map((p) => new THREE.Vector3(p.x, 0.1 + i * H + H * 0.87, -p.y));
       g.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x9aa3b2 })));
     }
   }
-  // Колонны фасада
   const colG = G('f1');
   const topY = 0.1 + FLOORS * H;
   for (let i = 0; i < 36; i++) {
@@ -186,7 +180,6 @@ async function initViewer(host, pinsHost) {
     const c = addMesh(colG, new THREE.CylinderGeometry(0.07, 0.07, topY, 6), mat(0xc4cad4), false);
     c.position.set(a * Math.cos(t), topY / 2, -b * Math.sin(t));
   }
-  // Кровля (голубые фермы)
   const roof = G('f7');
   const A1 = 4.6 + 6 * 0.62 + 2.2, B1 = 6.6 + 6 * 0.62 + 2.2, A0 = A1 - 3.2, B0 = B1 - 3.2, ry = topY + 1.3;
   const curve = (a, b, y) => new THREE.CatmullRomCurve3(ellipse(a, b, 72).getPoints(72).slice(0, -1).map((p) => new THREE.Vector3(p.x, y, -p.y)), true);
@@ -203,7 +196,6 @@ async function initViewer(host, pinsHost) {
   const membM = addMesh(roof, memb, mat(0xffffff, { transparent: true, opacity: 0.35, side: THREE.DoubleSide }), false); membM.position.y = ry - 0.25;
   const scr = addMesh(roof, new THREE.BoxGeometry(2.4, 1.2, 0.15), mat(0x2b3a55, { emissive: 0x2a5cc9, emissiveIntensity: 0.6 })); scr.position.set(0, topY + 0.2, -(B0 + 0.4));
 
-  // Подвал и фундамент
   const slab = new THREE.ExtrudeGeometry(ellipse(A1 + 0.2, B1 + 0.2), { depth: 0.35, bevelEnabled: false, curveSegments: 64 }); slab.rotateX(-Math.PI / 2);
   addMesh(G('base'), slab, mat(0xaeb6c3)).position.y = -0.45;
   const pileM = mat(0x8e98a8);
@@ -211,12 +203,10 @@ async function initViewer(host, pinsHost) {
     if ((x * x) / (A1 * A1) + (z * z) / (B1 * B1) > 0.95) continue;
     const p = addMesh(G('found'), new THREE.CylinderGeometry(0.08, 0.08, 2.4, 6), pileM, false); p.position.set(x, -1.65, z);
   }
-  // Парковка
   const park = G('parking');
   const lot = addMesh(park, new THREE.PlaneGeometry(9, 5), mat(0x9ca3ae), false); lot.rotation.x = -Math.PI / 2; lot.position.set(-9.5, 0.01, 9.5); lot.rotation.z = 0.5;
   const carColors = [0x4081e1, 0xec8841, 0xffffff, 0x6bb473, 0x2b2f38, 0xdd5069];
   for (let i = 0; i < 18; i++) { const c = addMesh(park, new THREE.BoxGeometry(0.42, 0.28, 0.8), mat(carColors[i % 6]), false); const r = i % 6, k = Math.floor(i / 6); c.position.set(-12.2 + r * 1.05 + k * 0.6, 0.15, 8.3 + k * 1.6 - r * 0.55); c.rotation.y = 0.5; }
-  // Граница участка
   const border = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(ground.getPoints(64).map((p) => new THREE.Vector3(p.x, 0.03, -p.y))), new THREE.LineDashedMaterial({ color: 0xec8841, dashSize: 0.6, gapSize: 0.35 }));
   border.computeLineDistances(); G('plot').add(border);
 
@@ -230,7 +220,6 @@ async function initViewer(host, pinsHost) {
     if (i === 1) { show('site', true); show('plot', true); }
     if (i === 2) { show('site', true); show('parking', true); show('plot', true); }
     if (i === 3 || i === 4) { show('site', true); all.filter((x) => x.startsWith('f') && x !== 'found').forEach((x) => show(x, true)); }
-    // Секции — обрезка модели плоскостью
     renderer.clippingPlanes = i === 3 ? [new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0.01)] : i === 4 ? [new THREE.Plane(new THREE.Vector3(1, 0, 0), 0.01)] : [];
     if (i === 0) applyLayers();
   }
@@ -251,7 +240,6 @@ async function initViewer(host, pinsHost) {
   setModel(BS.model);
   applyLayers();
 
-  // Комментарии-метки
   const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
   let downAt = null;
   renderer.domElement.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; });

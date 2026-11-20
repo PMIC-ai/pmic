@@ -15,7 +15,6 @@ const pick = (id) => project(id || 'palace') || projects()[0];
 function stages(p) {
   return p.wbs.children.map((s) => { const r = roll(s); return { id: s.id, name: s.name, budget: r.budget, spent: r.ac, ev: r.ev, children: (s.children.length ? s.children : [s]).map((c) => { const cr = roll(c); return { name: c.name, budget: cr.budget, spent: cr.ac }; }) }; });
 }
-// Транзакции выводятся из данных проекта: оплата закрытых работ и авансы по счетам
 function transactions(p) {
   const tx = [];
   const who = ['vasiliev', 'ivanova', 'ivanov', 'krasnoselskikh'];

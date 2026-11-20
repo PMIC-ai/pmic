@@ -7,7 +7,6 @@ const TABS = [['approved', 'Согласованные', 'Согласован']
 const S = { sort: 'date', project: 'all' };
 const projNames = PROJECTS.filter((p) => p.group === 'construction').map((p) => p.name);
 
-// 55 документов: 39 согласованных, 6 отклонённых, 10 на согласовании
 const DOCS = (() => {
   const out = [];
   const push = (status, n, offset) => {
