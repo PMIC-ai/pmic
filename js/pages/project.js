@@ -399,7 +399,7 @@ export default {
         const k = e.target.dataset.sc; if (!k) return;
         SC[pid][k] = +e.target.value;
         $('#sv_' + k, root).textContent = `${k === 'crew' && +e.target.value > 0 ? '+' : ''}${e.target.value} ${e.target.dataset.u}`;
-        clearTimeout(this._t); this._t = setTimeout(() => { const y = scrollY; $('#fcRoot', root).innerHTML = forecastBody(P(), SC[pid]); scrollTo(0, y); track('whatif_used'); }, 120);
+        clearTimeout(this._t); this._t = setTimeout(() => { const box = $('#fcRoot', root); if (!box) return; const y = scrollY; box.innerHTML = forecastBody(P(), SC[pid]); scrollTo(0, y); track('whatif_used'); }, 120);
       });
     }
 
@@ -426,7 +426,15 @@ export default {
       if (act === 'xlsx') return exportStructure(P());
       if (act === 'costfc') return import('../modals.js').then((m) => m.openForecast());
       if (act === 'gcollapse') { GS.collapsed = !GS.collapsed; $('.gantt', root).classList.toggle('collapsed', GS.collapsed); return; }
-      if (act === 'gfull') { const c = $('#gcard', root); if (document.fullscreenElement) document.exitFullscreen(); else c.requestFullscreen?.().catch(() => {}); return; }
+      if (act === 'gfull') {
+        const c = $('#gcard', root);
+        const max = (on) => { c.classList.toggle('g-max', on); document.body.classList.toggle('no-scroll', on); };
+        if (document.fullscreenElement) { document.exitFullscreen(); return; }
+        if (c.classList.contains('g-max')) { max(false); return; }
+        if (c.requestFullscreen && document.fullscreenEnabled) c.requestFullscreen().catch(() => max(true)); else max(true);
+        if (!c._esc) { c._esc = true; document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && c.classList.contains('g-max')) max(false); }); }
+        return;
+      }
       if (act === 'gprint') return printGantt(P());
       if (act === 'screset') { SC[pid] = { pay: 0, price: 0, crew: 0 }; return rerender(); }
       if (act === 'fcxlsx') return exportForecast(P());

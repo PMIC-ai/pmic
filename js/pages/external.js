@@ -30,9 +30,11 @@ export const payPage = {
     $('#payCancel', root).onclick = () => { back(); toast('Оплата отменена', 'warn'); };
     $('#payOk', root).onclick = (e) => {
       e.currentTarget.innerHTML = icon('loader-circle', 18, 'spin') + ' Обработка…'; e.currentTarget.disabled = true;
+      const card = $('#payCard', root);
       setTimeout(() => {
+        if (!card?.isConnected) return;
         store.set((s) => ({ paid: { ...s.paid, [inv.id]: true } }));
-        $('#payCard', root).innerHTML = `<div class="center"><div class="success-ic">${icon('check', 40)}</div><h1>Платёж выполнен</h1><p class="muted">${money(inv.sum)} руб. · ${esc(inv.purpose)}</p><p class="muted" style="font-size:13px">Чек отправлен на почту ${USER.email}</p>
+        card.innerHTML = `<div class="center"><div class="success-ic">${icon('check', 40)}</div><h1>Платёж выполнен</h1><p class="muted">${money(inv.sum)} руб. · ${esc(inv.purpose)}</p><p class="muted" style="font-size:13px">Чек отправлен на почту ${USER.email}</p>
           <button class="btn btn-accent btn-block" id="toPmic" style="margin-top:22px">${icon('chevron-left', 18)} Вернуться в PMIC</button></div>`;
         $('#toPmic', root).onclick = () => { back(); setTimeout(() => toast(`Счёт № ${inv.id} оплачен`, 'ok'), 300); };
       }, 1100);
@@ -56,8 +58,8 @@ export const gosPage = {
     box.addEventListener('click', (e) => {
       const a = e.target.closest('[data-g]')?.dataset.g; if (!a) return;
       if (a === 'cancel') return back();
-      if (a === 'login') { e.target.closest('button').innerHTML = icon('loader-circle', 18, 'spin') + ' Вход…'; setTimeout(() => { box.innerHTML = step2(s); }, 700); }
-      if (a === 'send') { e.target.closest('button').innerHTML = icon('loader-circle', 18, 'spin') + ' Отправка…'; setTimeout(() => { store.set((st) => ({ gos: { ...st.gos, [s.id]: 'submitted' } })); box.innerHTML = step3(); }, 900); }
+      if (a === 'login') { e.target.closest('button').innerHTML = icon('loader-circle', 18, 'spin') + ' Вход…'; setTimeout(() => { if (box.isConnected) box.innerHTML = step2(s); }, 700); }
+      if (a === 'send') { e.target.closest('button').innerHTML = icon('loader-circle', 18, 'spin') + ' Отправка…'; setTimeout(() => { if (!box.isConnected) return; store.set((st) => ({ gos: { ...st.gos, [s.id]: 'submitted' } })); box.innerHTML = step3(); }, 900); }
       if (a === 'done') { back(); setTimeout(() => toast(`Заявление «${esc(s.title)}» подано`, 'ok'), 300); }
     });
   },

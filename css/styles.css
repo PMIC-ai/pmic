@@ -1261,3 +1261,5 @@ input[type=range]:disabled { opacity: .5; cursor: default; }
 .lp-delta { font-weight: 700; color: #D16B25; font-size: 15px; white-space: nowrap; }
 .topbar .fb-btn { height: 42px; border-radius: 12px; padding: 0 16px; }
 @media (max-width: 1600px) { .topbar .fb-btn { width: 42px; padding: 0; } }
+#gcard.g-max { position: fixed; inset: 0; z-index: 95; border-radius: 0; margin: 0; overflow: auto; background: var(--surface); }
+#gcard:fullscreen { overflow: auto; background: var(--surface); }
