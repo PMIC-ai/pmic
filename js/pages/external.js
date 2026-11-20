@@ -1,6 +1,6 @@
 // Демо-экраны внешних интеграций (банк, Госуслуги). Это имитация шага, без брендинга сторонних сервисов.
 import { icon } from '../icons.js';
-import { $, esc, money, toast, logoMark } from '../ui.js';
+import { $, esc, money, toast } from '../ui.js';
 import { INVOICES, BANKS, GOS_SERVICES, USER } from '../data.js';
 import { store } from '../store.js';
 
@@ -34,7 +34,7 @@ export const payPage = {
       setTimeout(() => {
         store.set((s) => ({ paid: { ...s.paid, [inv.id]: true } }));
         $('#payCard', root).innerHTML = `<div class="center"><div class="success-ic">${icon('check', 40)}</div><h1>Платёж выполнен</h1><p class="muted">${money(inv.sum)} руб. · ${esc(inv.purpose)}</p><p class="muted" style="font-size:13px">Чек отправлен на почту ${USER.email}</p>
-          <button class="btn btn-accent btn-block" id="toPmic" style="margin-top:22px"><span style="display:inline-flex">${logoMark(20, '#fff')}</span> Вернуться в PMIC</button></div>`;
+          <button class="btn btn-accent btn-block" id="toPmic" style="margin-top:22px">${icon('chevron-left', 18)} Вернуться в PMIC</button></div>`;
         $('#toPmic', root).onclick = () => { back(); setTimeout(() => toast(`Счёт № ${inv.id} оплачен`, 'ok'), 300); };
       }, 1100);
     };

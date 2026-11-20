@@ -48,7 +48,7 @@ export function modal({ title = '', body = '', footer = '', size = 'md', cls = '
   wrap.className = `overlay ${cls}`;
   wrap.innerHTML = `<div class="modal m-${size}" role="dialog" aria-modal="true" aria-label="${esc(title)}">
     <button class="icon-btn modal-x" data-close aria-label="Закрыть">${icon('x', 20)}</button>
-    ${brand ? `<div class="ai-brand"><span class="ai-logo">${logoMark(22, '#fff')}</span><b>PMIC AI</b></div>` : ''}
+    ${brand ? `<div class="ai-brand">${icon('sparkles', 18)}<b>PMIC AI</b></div>` : ''}
     ${title ? `<h2 class="modal-title">${esc(title)}</h2>` : ''}
     <div class="modal-body">${body}</div>
     ${footer ? `<div class="modal-foot">${footer}</div>` : ''}

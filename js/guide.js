@@ -1,6 +1,6 @@
 // Гид по демо: приветствие, чек-лист «что попробовать», сброс демо-данных, обратная связь
 import { icon } from './icons.js';
-import { $, esc, modal, toast, nav, logoMark } from './ui.js';
+import { $, esc, modal, toast, nav } from './ui.js';
 import { store } from './store.js';
 import { db } from './db.js';
 import { CONFIG } from './config.js';
@@ -69,8 +69,8 @@ export function welcome() {
   store.set({ welcomed: true });
   modal({
     size: 'md', cls: 'welcome-ov',
-    body: `<div class="welcome-m"><span class="logo-box" style="width:64px;height:64px">${logoMark(44)}</span>
-      <h2 class="modal-title" style="margin-top:18px">Добро пожаловать в PMIC</h2>
+    body: `<div class="welcome-m"><span class="wordmark">PMIC</span>
+      <h2 class="modal-title" style="margin-top:14px">Добро пожаловать в PMIC</h2>
       <p class="muted" style="margin:0 0 18px">Платформа прогнозного управления стоимостью, сроками и рисками строительных проектов. Это рабочее демо — пробуйте смело:</p>
       <ul class="welcome-list"><li>${icon('folder-plus', 18)} создайте свой проект по шаблону или загрузите график из Excel;</li><li>${icon('calendar', 18)} двигайте этапы на диаграмме Ганта, закрывайте задачи;</li><li>${icon('sparkles', 18)} смотрите, как PMIC AI пересчитывает прогноз срока и бюджета.</li></ul>
       <div class="form-grid" style="margin-top:22px"><button class="btn btn-accent" id="wGuide">${icon('target', 18)} Пройти гид (5 минут)</button><button class="btn btn-outline" data-close>Осмотрюсь сам</button></div></div>`,

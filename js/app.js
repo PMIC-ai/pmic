@@ -1,5 +1,5 @@
 import { icon } from './icons.js';
-import { $, $$, esc, avatar, popover, closePopovers, logoMark, debounce } from './ui.js';
+import { $, $$, esc, avatar, popover, closePopovers, debounce } from './ui.js';
 import { store } from './store.js';
 import { USER, FILES, EMPLOYEE_IDS, PEOPLE, APPROVALS } from './data.js';
 import { projects as dbProjects, project as dbProject, allTasks, getDb } from './db.js';
@@ -74,7 +74,7 @@ function navHTML(path) {
   const group = sec === 'project' ? (dbProject(path.split('/')[1])?.group || 'construction') : path.split('/')[1];
   const item = (href, ic, label, active, extra = '') => `<a class="nav-item ${active ? 'active' : ''} ${extra}" href="#/${href}" data-tip="${label}">${icon(ic, 20)}<span class="lbl">${label}</span>${extra.includes('has-sub') ? icon('chevron-down', 16, 'chev') : ''}</a>`;
   return `
-    <a class="side-brand brand" href="#/dashboard" style="display:none;position:static;height:auto;padding:6px 22px 18px;border:0;background:none"><span class="logo-box" style="width:44px;height:44px">${logoMark(30)}</span><span class="brand-t">PMIC</span></a>
+    <a class="side-brand brand" href="#/dashboard" style="display:none;position:static;height:auto;padding:6px 22px 18px;border:0;background:none"><span class="brand-t">PMIC</span></a>
     <nav class="nav" aria-label="Основное меню">
       ${item('dashboard', 'house', 'Личный кабинет', sec === 'dashboard' || sec === 'profile', sec === 'dashboard' || sec === 'profile' ? 'has-sub open' : '')}
       ${sec === 'dashboard' || sec === 'profile' ? `<div class="subnav"><a class="sub-item ${sec === 'dashboard' ? 'active' : ''}" href="#/dashboard">Обзор</a><a class="sub-item ${sec === 'profile' ? 'active' : ''}" href="#/profile">Профиль</a></div>` : ''}
@@ -105,7 +105,7 @@ function shellHTML(path, title, back) {
   const bb = (href, ic, label, act, cnt) => `<a href="#/${href}" class="${act ? 'active' : ''}">${icon(ic, 22)}<span>${label}</span>${cnt ? `<span class="nav-count">${cnt}</span>` : ''}</a>`;
   return `
   <div class="app">
-    <a class="brand" href="#/dashboard" aria-label="PMIC — на главную"><span class="logo-box">${logoMark(38)}</span><span class="brand-t">PMIC</span></a>
+    <a class="brand" href="#/dashboard" aria-label="PMIC — на главную"><span class="brand-t">PMIC</span></a>
     <aside class="sidebar" id="sidebar">${navHTML(path)}</aside>
     <div class="scrim" id="scrim"></div>
     <header class="topbar">
@@ -175,7 +175,7 @@ function mountSearch() {
   res.addEventListener('mousedown', (e) => { const b = e.target.closest('.sr-item'); if (b) { e.preventDefault(); pick(+b.dataset.i); } });
   input.addEventListener('blur', () => setTimeout(() => { res.classList.add('hide'); if (window.innerWidth <= 900) box.classList.remove('open'); }, 150));
   $('#mSearch').onclick = () => { box.classList.add('open'); input.focus(); };
-  document.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); box.classList.add('open'); input.focus(); } });
+  document.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && (e.code === 'KeyK' || e.key.toLowerCase() === 'k')) { e.preventDefault(); box.classList.add('open'); input.focus(); } });
 }
 const docIconSmall = (t) => `<svg width="18" height="22" viewBox="0 0 26 32"><path d="M3 0h13l10 10v19a3 3 0 0 1-3 3H3a3 3 0 0 1-3-3V3a3 3 0 0 1 3-3z" fill="${{ pdf: '#E2445C', xls: '#2E9E58' }[t] || '#2F6FDE'}"/></svg>`;
 
@@ -284,3 +284,9 @@ getDb();
 render();
 // Совместный режим: подтягиваем данные команды и перерисовываем экран, если ничего не открыто
 initSync(() => { if (!document.querySelector('.overlay.show, .drawer-wrap.show')) render(); }).then(() => { if (sync.status === 'ok') render(); });
+
+// Ползунки: закрашиваем пройденную часть дорожки
+const rangeFill = (r) => { const a = +r.min || 0, b = +r.max || 100; r.style.setProperty('--v', `${((+r.value - a) / (b - a || 1)) * 100}%`); };
+document.addEventListener('input', (e) => { if (e.target.matches?.('input[type=range]')) rangeFill(e.target); });
+new MutationObserver(() => document.querySelectorAll('input[type=range]').forEach(rangeFill)).observe(document.body, { childList: true, subtree: true });
+document.querySelectorAll('input[type=range]').forEach(rangeFill);

@@ -24,7 +24,7 @@ export default {
     const showAll = sessionStorage.getItem('dashTasksAll') === '1';
     const pf = pinned && forecast(pinned);
     return `
-    <section class="welcome"><h2>Добро пожаловать, ${USER.first}!</h2><p>Отслеживайте, управляйте и прогнозируйте проекты и сроки.</p></section>
+    <section class="welcome"><h2>${(() => { const h = new Date().getHours(); return h < 5 ? 'Доброй ночи' : h < 12 ? 'Доброе утро' : h < 18 ? 'Добрый день' : 'Добрый вечер'; })()}, ${USER.first}</h2><p>Отслеживайте, управляйте и прогнозируйте проекты и сроки.</p></section>
     <div class="dash">
       <a class="card kpi" href="#/projects" aria-label="Всего проектов">
         <h3>Всего проектов</h3><div class="big">${ps.length}</div>
